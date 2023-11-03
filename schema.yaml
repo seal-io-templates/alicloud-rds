@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  title: OpenAPI schema for template alicloud-rds
+components:
+  schemas:
+    variables:
+      type: object
+      required:
+      - architecture
+      - engine
+      - password
+      properties:
+        engine:
+          title: Engine
+          type: string
+          description: Select the RDS engine, support serval kinds of 'MySQL', 'MariaDB'
+            and 'PostgreSQL'.
+          enum:
+          - MySQL-5.7
+          - MySQL-8.0
+          - MariaDB-10.3
+          - PostgreSQL-13
+          - PostgreSQL-14
+          - PostgreSQL-15
+          x-walrus-ui:
+            group: Basic
+        architecture:
+          title: Architecture
+          type: string
+          description: Select the RDS architecture, support from 'Standalone' and
+            'Replication', 'MariaDB' engine doesn't support 'Standalone'.
+          enum:
+          - Standalone
+          - Replication
+          x-walrus-ui:
+            group: Basic
+        password:
+          title: Password
+          type: string
+          description: Specify the root password to initialize after launching.
+          writeOnly: true
+          format: password
+          x-walrus-ui:
+            group: Basic
+        username:
+          title: Username
+          type: string
+          description: Specify the root username to initialize after launching, do
+            not allow 'root' and 'sa'.
+          default: rdsusr
+          x-walrus-ui:
+            group: Basic
+        database:
+          title: Database
+          type: string
+          description: Specify the database name to initialize after launching.
+          default: rdsdb
+          x-walrus-ui:
+            group: Basic
+        instance_type:
+          title: Instance Type
+          type: string
+          description: Specify the instance type to deploy the RDS engine, pick at
+            least 2C4G type automatically if empty.
+          default: ''
+          x-walrus-ui:
+            group: Advanced
+        storage_type:
+          title: Storage Type
+          type: string
+          description: Specify the storage type to deploy the RDS engine, pick at
+            least ESSD PL1 if empty.
+          default: ''
+          x-walrus-ui:
+            group: Advanced
+        init_sql_url:
+          title: Init SQL URL
+          type: string
+          description: Specify the init SQL download URL to initialize after launching.
+          default: ''
+          x-walrus-ui:
+            group: Advanced
+        publicly_accessible:
+          title: Publicly Accessible
+          type: boolean
+          description: Specify to allow publicly accessing.
+          default: false
+          x-walrus-ui:
+            group: Advanced
+        vpc_id:
+          title: VPC ID
+          type: string
+          description: Specify the existing VPC ID to deploy, create a new one if
+            empty.
+          default: ''
+          x-walrus-ui:
+            group: Advanced
+        walrus_metadata_project_name:
+          title: walrus_metadata_project_name
+          type: string
+          description: Walrus metadata project name.
+          default: ''
+          x-walrus-ui:
+            hidden: true
+        walrus_metadata_environment_name:
+          title: walrus_metadata_environment_name
+          type: string
+          description: Walrus metadata environment name.
+          default: ''
+          x-walrus-ui:
+            hidden: true
+        walrus_metadata_service_name:
+          title: walrus_metadata_service_name
+          type: string
+          description: Walrus metadata service name.
+          default: ''
+          x-walrus-ui:
+            hidden: true

@@ -125,11 +125,11 @@ locals {
 #
 
 locals {
-  walrus_metadata_project_name     = coalesce(var.walrus_metadata_project_name, "example")
-  walrus_metadata_environment_name = coalesce(var.walrus_metadata_environment_name, "example")
-  walrus_metadata_service_name     = coalesce(var.walrus_metadata_service_name, "alicloudrds")
+  walrus_context_project_name     = coalesce(try(var.walrus_metadata_project_name, null), try(var.context["project"]["name"], null), "example")
+  walrus_context_environment_name = coalesce(try(var.walrus_metadata_environment_name, null), try(var.context["environment"]["name"], null), "example")
+  walrus_context_resource_name    = coalesce(try(var.walrus_metadata_service_name, null), try(var.context["resource"]["name"], null), "alicloudrds")
 
-  identifier = join("-", [local.walrus_metadata_project_name, local.walrus_metadata_environment_name, local.walrus_metadata_service_name])
+  identifier = join("-", [local.walrus_context_project_name, local.walrus_context_environment_name, local.walrus_context_resource_name])
 }
 
 locals {
@@ -148,9 +148,9 @@ locals {
   sql_init            = var.init_sql_url != ""
   publicly_accessible = var.publicly_accessible || local.sql_init
   tags = {
-    "walrus_project"     = local.walrus_metadata_project_name
-    "walrus_environment" = local.walrus_metadata_environment_name
-    "walrus_service"     = local.walrus_metadata_service_name
+    "walrus_project"     = local.walrus_context_project_name
+    "walrus_environment" = local.walrus_context_environment_name
+    "walrus_service"     = local.walrus_context_resource_name
   }
   instance_type   = coalesce(var.instance_type, lookup(local.engineInfo, format("instanceType%s", local.architecture)))
   storage_type    = coalesce(var.storage_type, "cloud_essd")
